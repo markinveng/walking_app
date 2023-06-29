@@ -45,3 +45,8 @@ app.*.map.json
 
 # FVM Setting
 .fvm/flutter_sdk
+
+#Extra platform
+windows
+maxos
+linux
