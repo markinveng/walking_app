@@ -36,9 +36,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   freezed: ^2.3.2
-  flutter_riverpod: ^2.3.2
+  flutter_riverpod: ^2.3.6
   flex_color_scheme: ^7.0.0
-  health: ^5.0.0
+  health: ^7.0.0
   permission_handler: ^10.2.0
 
 dev_dependencies:
