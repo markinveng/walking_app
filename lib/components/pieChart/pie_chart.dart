@@ -1,11 +1,71 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-class PieChartPainter extends CustomPainter {
+class AnimationArc extends StatefulWidget {
   final int stepCount;
   final int targetStepCount;
 
-  PieChartPainter({required this.stepCount, required this.targetStepCount});
+  const AnimationArc({required this.stepCount, required this.targetStepCount});
+
+  @override
+  _AnimationArc createState() => _AnimationArc();
+}
+
+class _AnimationArc extends State<AnimationArc>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+  bool animationPlayed = false;
+  @override
+  void initState() {
+    super.initState();
+
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 1000),
+      vsync: this,
+    );
+
+    final curvedAnimation = CurvedAnimation(
+        parent: _animationController, curve: Curves.easeInOut);
+
+    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation)
+      ..addListener(() {
+        setState(() {
+        });
+      });
+
+    _animationController.forward(from: 0.0);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: CustomPaint(
+          child: Container(),
+          painter: PieChartPainter(
+            stepCount: widget.stepCount,
+            targetStepCount: widget.targetStepCount,
+            arcAnimation: _animation.value,
+          )),
+    );
+  }
+}
+
+class PieChartPainter extends CustomPainter {
+  final int stepCount;
+  final int targetStepCount;
+  double arcAnimation;
+
+  PieChartPainter(
+      {required this.stepCount,
+      required this.targetStepCount,
+      required this.arcAnimation});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -108,12 +168,12 @@ class PieChartPainter extends CustomPainter {
       canvas.drawArc(
           Rect.fromCircle(center: centerOffset, radius: radius / 1.5),
           -5 * pi / 4,
-          6 * pi / 4 * percentage,
+          6 * pi / 4 * percentage * arcAnimation,
           false,
           innerPaint);
     }
   }
 
   @override
-  bool shouldRepaint(PieChartPainter oldDelegate) => false;
+  bool shouldRepaint(PieChartPainter oldDelegate) => true;
 }

@@ -13,20 +13,22 @@ class App extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 28, 37, 64),
       appBar: AppBar(
-        title: const Text('目標設定'),
-        backgroundColor: Color.fromARGB(255, 42, 54, 86)
-      ),
+          title: const Text('目標設定'),
+          backgroundColor: Color.fromARGB(255, 42, 54, 86)),
       body: Center(
         child: Container(
           width: size.width,
           height: size.height * 0.9,
-          child: CustomPaint(
-            painter: PieChartPainter(stepCount: 10000, targetStepCount: 10000),
-          ),
+          child: Consumer(builder: (context, watch, _) {
+            final stepCount = 5000;
+            final targetStepCount = 10000;
+            return AnimationArc(
+                stepCount: stepCount, targetStepCount: targetStepCount);
+          }),
           // child: Consumer(
           //   builder: (context, ref, _) {
           //     final healthData = ref.watch(healthDataProvider);
-      
+
           //   return healthData.when(
           //     data: (data) {
           //       // 歩数データを処理するコード
