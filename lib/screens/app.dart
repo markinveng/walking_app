@@ -11,15 +11,17 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 28, 37, 64),
       appBar: AppBar(
         title: const Text('目標設定'),
+        backgroundColor: Color.fromARGB(255, 42, 54, 86)
       ),
       body: Center(
         child: Container(
           width: size.width,
           height: size.height * 0.9,
           child: CustomPaint(
-            painter: PieChartPainter(stepCount: 100, targetStepCount: 10000),
+            painter: PieChartPainter(stepCount: 10000, targetStepCount: 10000),
           ),
           // child: Consumer(
           //   builder: (context, ref, _) {
