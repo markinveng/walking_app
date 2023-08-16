@@ -20,7 +20,7 @@ class App extends StatelessWidget {
           width: size.width,
           height: size.height * 0.9,
           child: Consumer(builder: (context, watch, _) {
-            final stepCount = 5000;
+            final stepCount = 10001;
             final targetStepCount = 10000;
             return AnimationArc(
                 stepCount: stepCount, targetStepCount: targetStepCount);

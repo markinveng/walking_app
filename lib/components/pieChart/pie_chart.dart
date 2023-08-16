@@ -25,13 +25,12 @@ class _AnimationArc extends State<AnimationArc>
       vsync: this,
     );
 
-    final curvedAnimation = CurvedAnimation(
-        parent: _animationController, curve: Curves.easeInOut);
+    final curvedAnimation =
+        CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
 
     _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation)
       ..addListener(() {
-        setState(() {
-        });
+        setState(() {});
       });
 
     _animationController.forward(from: 0.0);
@@ -46,13 +45,63 @@ class _AnimationArc extends State<AnimationArc>
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: CustomPaint(
-          child: Container(),
-          painter: PieChartPainter(
-            stepCount: widget.stepCount,
-            targetStepCount: widget.targetStepCount,
-            arcAnimation: _animation.value,
-          )),
+      child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        double parentWidth = constraints.maxWidth;
+        double parentHeight = constraints.maxHeight;
+        const completeText = 'Completed!';
+
+        return Stack(children: [
+          CustomPaint(
+            child: Container(),
+            painter: PieChartPainter(
+              stepCount: widget.stepCount,
+              targetStepCount: widget.targetStepCount,
+              arcAnimation: _animation.value,
+            ),
+          ),
+          Positioned(
+            top: parentHeight / 3.5,
+            left: 0,
+            right: 0,
+            child: Center(
+              child:widget.stepCount >= widget.targetStepCount ?Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 18),
+                    child: Text(
+                      completeText,
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          fontSize: 25,
+                          fontWeight: FontWeight.w800),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Text(
+                    "${(widget.stepCount * _animation.value).round()}/${widget.targetStepCount.round()}",
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800),
+                          textAlign: TextAlign.center,
+                        ),
+                ],
+              ) : Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Text(
+                        "${(widget.stepCount * _animation.value).round()}/${widget.targetStepCount.round()}",
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontSize: 25,
+                            fontWeight: FontWeight.w800),
+                        textAlign: TextAlign.center,
+                      ),
+              ),
+            ),
+          ),
+        ]);
+      }),
     );
   }
 }
@@ -152,7 +201,7 @@ class PieChartPainter extends CustomPainter {
     final innerPaint = Paint()
       ..color = lineColor
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 30.0
+      ..strokeWidth = 25.0
       ..style = PaintingStyle.stroke;
 
     canvas.drawCircle(shaderRect.center, size.width / 3.0, pie);
