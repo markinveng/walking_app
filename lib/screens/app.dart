@@ -19,26 +19,26 @@ class App extends StatelessWidget {
         child: Container(
           width: size.width,
           height: size.height * 0.9,
-          child: Consumer(builder: (context, watch, _) {
-            final stepCount = 10001;
-            final targetStepCount = 10000;
-            return AnimationArc(
-                stepCount: stepCount, targetStepCount: targetStepCount);
-          }),
-          // child: Consumer(
-          //   builder: (context, ref, _) {
-          //     final healthData = ref.watch(healthDataProvider);
-
-          //   return healthData.when(
-          //     data: (data) {
-          //       // 歩数データを処理するコード
-          //       return Text('Total steps: ${data.length}');
-          //     },
-          //     loading: () => CircularProgressIndicator(),
-          //     error: (error, stackTrace) => Text('Error: $error'),
-          //   );
-          //   },
-          // )
+          child: Consumer(
+            builder: (context, ref, _) {
+              final healthData = ref.watch(healthDataProvider);
+              final stepCount = ref.watch(healthDataProvider);
+              final targetStepCount = 10000;
+              return healthData.when(
+                data: (data) {
+                  //final stepCount = healthData.
+                  // 歩数データを処理するコード
+                  print(data.length);
+                  return AnimationArc(
+                    stepCount: 5000,
+                    targetStepCount: 10000,
+                  );
+                },
+                loading: () => CircularProgressIndicator(),
+                error: (error, stackTrace) => Text('Error: $error'),
+              );
+            },
+          ),
         ),
       ),
     );

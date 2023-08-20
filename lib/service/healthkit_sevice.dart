@@ -4,7 +4,7 @@ import 'package:health/health.dart';
 final healthDataProvider = FutureProvider<List<HealthDataPoint>>((ref) async {
   final health = HealthFactory();
   final now = DateTime.now();
-  final start = DateTime(now.year, now.month, now.day);
+  final start = DateTime(now.weekday, now.month, now.day);
   final end = now;
 
   final permissions = [
@@ -18,6 +18,7 @@ final healthDataProvider = FutureProvider<List<HealthDataPoint>>((ref) async {
       // 歩数データを取得
       final results =
           await health.getHealthDataFromTypes(start, end, permissions);
+      print(results);
       return results;
     } else {
       throw Exception('HealthKitのアクセスが許可されていません。');
