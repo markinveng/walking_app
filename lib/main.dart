@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: FlexThemeData.light(scheme: FlexScheme.bigStone),
       darkTheme: FlexThemeData.light(scheme: FlexScheme.mandyRed),
       themeMode: ThemeMode.system,
-      home: const App(),
+      home: App(),
     );
   }
 }

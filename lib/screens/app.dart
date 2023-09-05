@@ -1,45 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:walking_app/components/pieChart/pie_chart.dart';
+import 'package:walking_app/screens/top_screen.dart';
 
-import '../service/healthkit_sevice.dart';
+import 'group_list_screen.dart';
+import 'menu_screen.dart';
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+class App extends StatefulWidget {
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State with SingleTickerProviderStateMixin {
+  late PageController _pageController;
+
+  int _screen = 0;
+
+  // ページ下部に並べるナビゲーションメニューの一覧
+  final myBottomNavBarItems = [
+    const BottomNavigationBarItem(
+        icon: Icon(Icons.workspaces_filled),
+        label: 'Group'
+      ),
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.person),
+        label: 'Profile'
+      ),
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.menu),
+        label: 'Menu',
+      ),];
+  
+
+  @override
+  void initState() {
+    super.initState();
+
+    _pageController = PageController(
+      initialPage: _screen,
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 28, 37, 64),
-      appBar: AppBar(
-          title: const Text('目標設定'),
-          backgroundColor: Color.fromARGB(255, 42, 54, 86)),
-      body: Center(
-        child: Container(
-          width: size.width,
-          height: size.height * 0.9,
-          child: Consumer(
-            builder: (context, ref, _) {
-              final healthData = ref.watch(healthDataProvider);
-              final stepCount = ref.watch(healthDataProvider);
-              final targetStepCount = 10000;
-              return healthData.when(
-                data: (data) {
-                  //final stepCount = healthData.
-                  // 歩数データを処理するコード
-                  print(data.length);
-                  return AnimationArc(
-                    stepCount: 5000,
-                    targetStepCount: 10000,
-                  );
-                },
-                loading: () => CircularProgressIndicator(),
-                error: (error, stackTrace) => Text('Error: $error'),
-              );
-            },
-          ),
-        ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) => setState(() {
+          _screen = index;
+        }),
+        children: const [GroupListScreen(),TopScreen(),MenuScreen()],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _screen,
+        onTap: (index) {
+          setState(() {
+            _screen = index;
+
+            _pageController.animateToPage(index,
+                duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+          });
+        },
+        items: myBottomNavBarItems,
       ),
     );
   }
