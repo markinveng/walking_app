@@ -12,7 +12,7 @@ class App extends StatefulWidget {
 class _AppState extends State with SingleTickerProviderStateMixin {
   late PageController _pageController;
 
-  int _screen = 0;
+  int _screen = 1;
 
   // ページ下部に並べるナビゲーションメニューの一覧
   final myBottomNavBarItems = [

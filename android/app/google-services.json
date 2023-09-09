@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "314352704371",
+    "project_id": "walkingapp-383615",
+    "storage_bucket": "walkingapp-383615.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314352704371:android:039709b9a16c93d3aac306",
+        "android_client_info": {
+          "package_name": "com.example.walking_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGemhKuXb8XyRCgrJ6NUVPn--DqBgxmWs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
