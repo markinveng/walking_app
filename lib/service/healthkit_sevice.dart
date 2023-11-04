@@ -18,7 +18,6 @@ final healthDataProvider = FutureProvider<List<HealthDataPoint>>((ref) async {
       // 歩数データを取得
       final results =
           await health.getHealthDataFromTypes(start, end, permissions);
-      print(results);
       return results;
     } else {
       throw Exception('HealthKitのアクセスが許可されていません。');

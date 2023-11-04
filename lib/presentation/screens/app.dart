@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:walking_app/screens/top_screen.dart';
+import 'package:walking_app/ViewModel/top_screen_view_model.dart';
+import 'package:walking_app/presentation/screens/top_screen.dart';
 
 import 'group_list_screen.dart';
 import 'menu_screen.dart';
@@ -17,18 +18,13 @@ class _AppState extends State with SingleTickerProviderStateMixin {
   // ページ下部に並べるナビゲーションメニューの一覧
   final myBottomNavBarItems = [
     const BottomNavigationBarItem(
-        icon: Icon(Icons.workspaces_filled),
-        label: 'Group'
-      ),
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.person),
-        label: 'Profile'
-      ),
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.menu),
-        label: 'Menu',
-      ),];
-  
+        icon: Icon(Icons.workspaces_filled), label: 'Group'),
+    const BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.menu),
+      label: 'Menu',
+    ),
+  ];
 
   @override
   void initState() {
@@ -53,16 +49,16 @@ class _AppState extends State with SingleTickerProviderStateMixin {
         onPageChanged: (index) => setState(() {
           _screen = index;
         }),
-        children: const [GroupListScreen(),TopScreen(),MenuScreen()],
+        children: [const GroupListScreen(),TopScreen(TopScreenViewModel()), const MenuScreen()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _screen,
         onTap: (index) {
           setState(() {
             _screen = index;
-
             _pageController.animateToPage(index,
-                duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOut);
           });
         },
         items: myBottomNavBarItems,

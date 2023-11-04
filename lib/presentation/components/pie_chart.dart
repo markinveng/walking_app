@@ -1,46 +1,15 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 
-class AnimationArc extends StatefulWidget {
+class AnimationArc extends StatelessWidget {
   final int stepCount;
   final int targetStepCount;
+  final double durationValue;
 
-  const AnimationArc({required this.stepCount, required this.targetStepCount});
-
-  @override
-  _AnimationArc createState() => _AnimationArc();
-}
-
-class _AnimationArc extends State<AnimationArc>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _animation;
-  bool animationPlayed = false;
-  @override
-  void initState() {
-    super.initState();
-
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1000),
-      vsync: this,
-    );
-
-    final curvedAnimation =
-        CurvedAnimation(parent: _animationController, curve: Curves.easeInOut);
-
-    _animation = Tween<double>(begin: 0, end: 1).animate(curvedAnimation)
-      ..addListener(() {
-        setState(() {});
-      });
-
-    _animationController.forward(from: 0.0);
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
+  const AnimationArc(
+      {required this.stepCount,
+      required this.targetStepCount,
+      required this.durationValue});
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +24,9 @@ class _AnimationArc extends State<AnimationArc>
           CustomPaint(
             child: Container(),
             painter: PieChartPainter(
-              stepCount: widget.stepCount,
-              targetStepCount: widget.targetStepCount,
-              arcAnimation: _animation.value,
+              stepCount: stepCount,
+              targetStepCount: targetStepCount,
+              durationValue: durationValue,
             ),
           ),
           Positioned(
@@ -65,39 +34,41 @@ class _AnimationArc extends State<AnimationArc>
             left: 0,
             right: 0,
             child: Center(
-              child:widget.stepCount >= widget.targetStepCount ?Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 18),
-                    child: Text(
-                      completeText,
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 255, 255, 255),
-                          fontSize: 25,
-                          fontWeight: FontWeight.w800),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Text(
-                    "${(widget.stepCount * _animation.value).round()}/${widget.targetStepCount.round()}",
+              child: stepCount >= targetStepCount
+                  ? Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 18),
+                          child: Text(
+                            completeText,
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                fontSize: 25,
+                                fontWeight: FontWeight.w800),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Text(
+                          "${(stepCount * durationValue).round()}/${targetStepCount.round()}",
                           style: const TextStyle(
                               color: Color.fromARGB(255, 255, 255, 255),
                               fontSize: 22,
                               fontWeight: FontWeight.w800),
                           textAlign: TextAlign.center,
                         ),
-                ],
-              ) : Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Text(
-                        "${(widget.stepCount * _animation.value).round()}/${widget.targetStepCount.round()}",
+                      ],
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Text(
+                        "${(stepCount * durationValue).round()}/${targetStepCount.round()}",
                         style: const TextStyle(
                             color: Color.fromARGB(255, 255, 255, 255),
                             fontSize: 25,
                             fontWeight: FontWeight.w800),
                         textAlign: TextAlign.center,
                       ),
-              ),
+                    ),
             ),
           ),
         ]);
@@ -109,12 +80,12 @@ class _AnimationArc extends State<AnimationArc>
 class PieChartPainter extends CustomPainter {
   final int stepCount;
   final int targetStepCount;
-  double arcAnimation;
+  double durationValue;
 
   PieChartPainter(
       {required this.stepCount,
       required this.targetStepCount,
-      required this.arcAnimation});
+      required this.durationValue});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -217,7 +188,7 @@ class PieChartPainter extends CustomPainter {
       canvas.drawArc(
           Rect.fromCircle(center: centerOffset, radius: radius / 1.5),
           -5 * pi / 4,
-          6 * pi / 4 * percentage * arcAnimation,
+          6 * pi / 4 * percentage * durationValue,
           false,
           innerPaint);
     }

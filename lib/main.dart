@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:walking_app/ViewModel/top_screen_view_model.dart';
+import 'package:walking_app/presentation/screens/top_screen.dart';
 
 import 'firebase_options.dart';
-import 'screens/app.dart';
+import 'presentation/screens/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: FlexThemeData.light(scheme: FlexScheme.bigStone),
       darkTheme: FlexThemeData.light(scheme: FlexScheme.mandyRed),
       themeMode: ThemeMode.system,
-      home: App(),
+      home: TopScreen(TopScreenViewModel()),
     );
   }
 }
